@@ -18,18 +18,22 @@ const createWorkout = (newWorkout) => {
         createdAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
         updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
     };
-
-    const createdWorkout = Workout.createNewWorkout(workoutToInsert);
-
-    return createdWorkout;
+    try {
+        const createdWorkout = Workout.createNewWorkout(workoutToInsert);
+        return createdWorkout;
+    } catch (error) {
+        throw error;
+    }
 };
 
-const updateWorkout = () => {
-    return;
+const updateWorkout = (id, changes) => {
+    const updatedWorkout = Workout.updateWorkout(id, changes);
+    return updatedWorkout;
 };
 
-const deleteWorkout = () => {
-    return;
+const deleteWorkout = (id) => {
+    const result = Workout.deleteWorkout(id);
+    return result;
 };
 
 module.exports = {
