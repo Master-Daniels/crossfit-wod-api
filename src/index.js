@@ -1,7 +1,11 @@
 const express = require("express");
 
+const v1Router = require("./v1/routes");
+
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.use("api/v1", v1Router);
 
 app.get("/", (req, res) => {
     res.end("<h1> Hello World! </h1>");
