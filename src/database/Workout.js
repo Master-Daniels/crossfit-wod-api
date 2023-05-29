@@ -1,7 +1,12 @@
 const { saveToDatabase, DB } = require("./utils");
 
 const getAllWorkouts = () => {
-    return DB.workouts;
+    try {
+        const workouts = DB.workouts;
+        return workouts;
+    } catch (error) {
+        throw { statusCode: 500, message: error?.message || error };
+    }
 };
 
 const createNewWorkout = (newWorkout) => {
@@ -24,28 +29,44 @@ const createNewWorkout = (newWorkout) => {
 };
 
 const getWorkout = (workoutId) => {
-    const workout = DB.workouts.find((workout) => workout.id === workoutId);
-    if (!workout) return;
-    return workout;
+    try {
+        const workout = DB.workouts.find((workout) => workout.id === workoutId);
+        if (!workout) throw { statusCode: 404, message: "Workout with workoutId:" + workoutId + "not found" };
+        return workout;
+    } catch (error) {
+        throw { statusCode: 500, message: error?.message || error };
+    }
 };
 
 const updateWorkout = (workoutId, changes) => {
-    const workoutIndex = DB.workout.findIndex((workout) => workout.id === workoutId);
-    if (workoutIndex < 0) return;
-    const workoutToUpdate = {
-        ...DB.workouts[workoutIndex],
-        ...changes,
-        updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
-    };
-    DB.workouts[workoutIndex] = workoutToUpdate;
-    saveToDatabase(DB);
+    try {
+        const workoutIndex = DB.workout.findIndex((workout) => workout.id === workoutId);
+
+        if (workoutIndex < 0) throw { statusCode: 404, message: "Workout with workoutId:" + workoutId + "not found" };
+        if (!changes) throw { statusCode: 400, message: "No data in Request body" };
+
+        const workoutToUpdate = {
+            ...DB.workouts[workoutIndex],
+            ...changes,
+            updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
+        };
+        DB.workouts[workoutIndex] = workoutToUpdate;
+        saveToDatabase(DB);
+    } catch (error) {
+        throw { statusCode: 500, message: error?.message || error };
+    }
 };
 
 const deleteWorkout = (workoutId) => {
-    const workoutIndex = DB.workout.findIndex((workout) => workout.id === workoutId);
-    if (workoutIndex < 0) return false;
-    DB.workouts.splice(workoutIndex, 1);
-    saveToDatabase(DB);
+    try {
+        const workoutIndex = DB.workout.findIndex((workout) => workout.id === workoutId);
+        if (workoutIndex < 0) throw { statusCode: 404, message: "Workout with workoutId:" + workoutId + "not found" };
+        DB.workouts.splice(workoutIndex, 1);
+        saveToDatabase(DB);
+    } catch (error) {
+        throw { statusCode: 500, message: error?.message || error };
+    }
+
     return true;
 };
 
