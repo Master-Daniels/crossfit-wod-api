@@ -13,7 +13,7 @@ const getAllWorkouts = () => {
 const getWorkout = (id) => {
     try {
         const workout = Workout.getWorkout(id);
-        return workout;
+        return [workout];
     } catch (error) {
         throw error;
     }
@@ -21,14 +21,14 @@ const getWorkout = (id) => {
 
 const createWorkout = (newWorkout) => {
     const workoutToInsert = {
-        ...newWorkout,
         id: uuid(),
         createdAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
         updatedAt: new Date().toLocaleString("en-US", { timeZone: "UTC" }),
+        ...newWorkout,
     };
     try {
         const createdWorkout = Workout.createNewWorkout(workoutToInsert);
-        return createdWorkout;
+        return [createdWorkout];
     } catch (error) {
         throw error;
     }
@@ -37,7 +37,7 @@ const createWorkout = (newWorkout) => {
 const updateWorkout = (id, changes) => {
     try {
         const updatedWorkout = Workout.updateWorkout(id, changes);
-        return updatedWorkout;
+        return [updatedWorkout];
     } catch (error) {
         throw error;
     }

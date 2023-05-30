@@ -3,7 +3,7 @@ const workoutService = require("../services/workoutService");
 function getAllWorkouts(req, res) {
     try {
         const workouts = workoutService.getAllWorkouts();
-        res.status(200).send({ status: "OK", data: workouts });
+        res.status(200).send({ status: "OK", length: workouts.length, data: workouts });
     } catch (error) {
         res.status(error?.status || 500).send({ status: "FAILED", data: { error: error?.message || error } });
     }
@@ -16,7 +16,7 @@ function getWorkout(req, res) {
     }
     try {
         const workout = workoutService.getWorkout(workoutId);
-        res.status(200).send({ status: "OK", data: workout });
+        res.status(200).send({ status: "OK", length: workout.length, data: workout });
     } catch (error) {
         res.status(error?.status || 404).send({ status: "FAILED", data: { error: error?.message || error } });
     }
@@ -33,7 +33,7 @@ function createWorkout(req, res) {
         });
     try {
         const createdWorkout = workoutService.createWorkout({ name, mode, equipment, exercises, trainerTips });
-        res.status(201).send({ status: "OK", data: createdWorkout });
+        res.status(201).send({ status: "OK", length: createdWorkout.length, data: createdWorkout });
     } catch (error) {
         res.status(error?.status || 500).send({ status: "FAILED", data: { error: error?.message || error } });
     }
@@ -45,8 +45,8 @@ function updateWorkout(req, res) {
         return res.status(400).send({ status: "FAILED", data: { error: "Parameter ':workoutId' cannot be empty" } });
     }
     try {
-        const updatedWorkout = workoutService.updateWorkout(workoutId, body);
-        res.status(200).send({ message: "Created", data: updatedWorkout });
+        const updatedWorkout = workoutService.updateWorkout(workoutId, req.body);
+        res.status(200).send({ message: "Created", length: updatedWorkout.length, data: updatedWorkout });
     } catch (error) {
         res.status(error?.status || 500).send({ status: "FAILED", data: { error: error?.message || error } });
     }

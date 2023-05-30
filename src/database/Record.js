@@ -6,7 +6,7 @@ const getRecordForWorkOut = (workoutId) => {
         if (!record || record.length < 1)
             throw {
                 status: 404,
-                message: `Can't find workout with the Id {${workoutId}}`,
+                message: `Can't find any record for workout with the Id {${workoutId}}`,
             };
         return record;
     } catch (error) {

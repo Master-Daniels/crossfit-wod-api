@@ -1,10 +1,9 @@
-const bcrypt = require("bcrypt");
 const memberService = require("../services/memberService");
 
 function getAllMembers(req, res) {
     try {
         const members = memberService.getAllMembers();
-        res.status(200).send({ status: "OK", data: members });
+        res.status(200).send({ status: "OK", length: members.length, data: members });
     } catch (error) {
         res.status(error?.status || 500).send({ status: "FAILED", data: { error: error?.message || error } });
     }
@@ -19,7 +18,7 @@ function getMember(req, res) {
                 .send({ status: "FAILED", data: { error: "Parameter ':workoutId' cannot be empty " } });
         }
         const member = memberService.getMember(memberId);
-        res.status(200).send({ status: "OK", data: member });
+        res.status(200).send({ status: "OK", length: member.length, data: member });
     } catch (error) {
         res.status(error?.status || 500).send({ status: "FAILED", data: { error: error?.message || error } });
     }
@@ -31,15 +30,13 @@ function createMember(req, res) {
         return res.status(400).send({
             status: "FAILED",
             data: {
-                error: "One of the following kesy is missing or is empty in request body: 'name', 'gender', 'dateOfBirth', 'email', 'password.",
+                error: "One of the following keys is missing or is empty in request body: 'name', 'gender', 'dateOfBirth', 'email', 'password.",
             },
         });
     }
     try {
-        const saltRounds = 10;
-        const passwordHash = bcrypt.hashSync(password, saltRounds);
-        const createdMember = memberService.createMember({ name, gender, dateOfBirth, email, passwordHash });
-        res.status(201).send({ status: "OK", data: createdMember });
+        const createdMember = memberService.createMember({ name, gender, dateOfBirth, email, password });
+        res.status(201).send({ status: "OK", length: createdMember.length, data: createdMember });
     } catch (error) {
         res.status(error?.status || 500).send({ status: "FAILED", data: { error: error?.message || error } });
     }
@@ -53,7 +50,7 @@ function updateMember(req, res) {
 
     try {
         const updatedMember = memberService.updateMember(memberId, req.body);
-        res.status(200).send({ status: "OK", data: updatedMember });
+        res.status(200).send({ status: "OK", length: updatedMember.length, data: updatedMember });
     } catch (error) {
         res.status(error?.status || 500).send({ status: "FAILED", data: { error: error?.message || error } });
     }
@@ -69,7 +66,7 @@ function deleteMember(req, res) {
     }
 
     try {
-        memberService.deleteMember(memberId);
+        memberService.deleteMember(memberId, password);
         res.status(204).send({ status: "OK" });
     } catch (error) {
         res.status(error?.status || 500).send({ status: "FAILED", data: { error: error?.message || error } });

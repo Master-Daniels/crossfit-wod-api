@@ -96,6 +96,22 @@
             "dateOfBirth": "08/04/1993",
             "email": "greg@mail.com",
             "password": "a6dcde7eceb689142f21a1e30b5fdb868ec4cd25d5537d67ac7e8c7816b0e862"
+        },
+        {
+            "name": "Master Daniels",
+            "gender": "male",
+            "dateOfBirth": "24/04/1999",
+            "email": "exampleg@mail.com",
+            "password": "$2b$10$OI5rZGFHBxct6EkE/C1H4OoR35a6f.VNlx1ZTVk1Fiq63izo7jCvG",
+            "id": "358b5bbd-0fe2-45a0-9777-4385de700c9f"
+        },
+        {
+            "name": "The Insufferable Tom",
+            "gender": "LGBTQ",
+            "dateOfBirth": "32/04/1999",
+            "email": "nicompoop@gmail.com",
+            "password": "someinsufferablepassword",
+            "id": "f9f2c741-d201-4412-a408-90339f16e645"
         }
     ],
     "records": [
