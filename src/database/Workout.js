@@ -1,8 +1,17 @@
 const { saveToDatabase, DB } = require("./utils");
 
-const getAllWorkouts = () => {
+const getAllWorkouts = (filterParams) => {
     try {
-        const workouts = DB.workouts;
+        let workouts = DB.workouts;
+        if (filterParams.mode) {
+            workouts = workouts.filter((workout) =>
+                workout.mode.toLowerCase().includes(filterParams.mode.toLowerCase())
+            );
+        }
+        if (filterParams.length) {
+            const end = Number(filterParams.length);
+            workouts = workouts.slice(0, end);
+        }
         return workouts;
     } catch (error) {
         throw { status: 500, message: error?.message || error };
